@@ -1,0 +1,31 @@
+service: new-service
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, self:custom.defaultStage}
+  profile: ${self:custom.profiles.${self:provider.stage}}
+  environment:
+    PROVIDER_URL: ${self:custom.env.predictor.url}
+plugins:
+  - serverless-offline
+custom:
+  env: ${file(./env/${self:provider.stage}.yml)}
+  defaultStage: dev
+  profiles:
+    dev: default
+    prod: default
+functions:
+  api:
+    handler: src/index.handler
+    events:
+      - http: 
+          path: api
+          method: get
+          # cors: true
+  foo:
+    handler: src/index.handler
+    events: 
+      - http: 
+          path: foo
+          method: get
+          # cors: true

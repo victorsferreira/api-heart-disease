@@ -1,0 +1,32 @@
+language: node_js
+node_js: 12
+
+env:
+  global:
+    - GLOBAL_VAR=...
+    
+cache:
+  npm: true
+  directories:
+    - node_modules
+
+install:
+  # install dependencies
+  npm install -g serverless
+  npm install
+
+script:
+  - npm test
+  # run tests
+
+before_deploy:
+  #
+
+deploy:
+  - provider: script
+    script: scripts/deploy.sh stg
+    on:
+      all_branches: true
+
+after_deploy:
+  #
