@@ -68,7 +68,7 @@ app.get('/api', async (req, res) => {
 app.get('/foo', async (req, res) => {
     console.log(Date.now());
 
-    res.send('Pong');
+    res.send('Teste de deploy');
 });
 
 app.use((err, req, res) => {
