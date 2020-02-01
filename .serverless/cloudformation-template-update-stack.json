@@ -68,83 +68,6 @@
         "LogGroupName": "/aws/lambda/new-service-dev-foo"
       }
     },
-    "IamRoleLambdaExecution": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "new-service",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream",
-                    "logs:CreateLogGroup"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/new-service-dev*:*"
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/new-service-dev*:*:*"
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ],
-        "Path": "/",
-        "RoleName": {
-          "Fn::Join": [
-            "-",
-            [
-              "new-service",
-              "dev",
-              {
-                "Ref": "AWS::Region"
-              },
-              "lambdaRole"
-            ]
-          ]
-        }
-      }
-    },
     "ApiLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -152,33 +75,32 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/new-service/dev/1580184131810-2020-01-28T04:02:11.810Z/new-service.zip"
+          "S3Key": "serverless/new-service/dev/1580525543705-2020-02-01T02:52:23.705Z/new-service.zip"
         },
         "FunctionName": "new-service-dev-api",
         "Handler": "src/index.handler",
         "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
+        "Role": "arn:aws:iam::458701424327:role/lambda-default-permission",
         "Runtime": "nodejs12.x",
-        "Timeout": 6
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "PROVIDER_URL": "http://localhost:5000"
+          }
+        }
       },
       "DependsOn": [
-        "ApiLogGroup",
-        "IamRoleLambdaExecution"
+        "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionvVYHH5pDy4k45IeLGwz4DFYJnz6lxxuEdZQlshc1Sk": {
+    "ApiLambdaVersionrzzVskLbuI5dLtC9SgdNWghyLys2nMY6LRjELB6DMUo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "cyL1nV6YNbUZDygNTqP0PVgKKrr44IU0Sxi3WvlnsM4="
+        "CodeSha256": "3qtVVbAh9+f1TzWOtsp7XTmd9Hn9R3dsRyawp1GR1mQ="
       }
     },
     "FooLambdaFunction": {
@@ -188,33 +110,32 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/new-service/dev/1580184131810-2020-01-28T04:02:11.810Z/new-service.zip"
+          "S3Key": "serverless/new-service/dev/1580525543705-2020-02-01T02:52:23.705Z/new-service.zip"
         },
         "FunctionName": "new-service-dev-foo",
         "Handler": "src/index.handler",
         "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
+        "Role": "arn:aws:iam::458701424327:role/lambda-default-permission",
         "Runtime": "nodejs12.x",
-        "Timeout": 6
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "PROVIDER_URL": "http://localhost:5000"
+          }
+        }
       },
       "DependsOn": [
-        "FooLogGroup",
-        "IamRoleLambdaExecution"
+        "FooLogGroup"
       ]
     },
-    "FooLambdaVersion8ze4jk0QkJ0oEjiALpW1XXIB8fBedLi0dBCyZg8hg": {
+    "FooLambdaVersionPwCPsQFfUT9Bh1sAr9Ad3VQFv80uupB4BmcolNLpVU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "FooLambdaFunction"
         },
-        "CodeSha256": "cyL1nV6YNbUZDygNTqP0PVgKKrr44IU0Sxi3WvlnsM4="
+        "CodeSha256": "3qtVVbAh9+f1TzWOtsp7XTmd9Hn9R3dsRyawp1GR1mQ="
       }
     },
     "ApiGatewayRestApi": {
@@ -365,7 +286,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1580184096086": {
+    "ApiGatewayDeployment1580525487482": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -476,13 +397,13 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionvVYHH5pDy4k45IeLGwz4DFYJnz6lxxuEdZQlshc1Sk"
+        "Ref": "ApiLambdaVersionrzzVskLbuI5dLtC9SgdNWghyLys2nMY6LRjELB6DMUo"
       }
     },
     "FooLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "FooLambdaVersion8ze4jk0QkJ0oEjiALpW1XXIB8fBedLi0dBCyZg8hg"
+        "Ref": "FooLambdaVersionPwCPsQFfUT9Bh1sAr9Ad3VQFv80uupB4BmcolNLpVU"
       }
     },
     "ServiceEndpoint": {

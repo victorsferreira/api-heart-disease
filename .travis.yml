@@ -1,5 +1,6 @@
 language: node_js
-node_js: 12
+node_js: 
+  - "12"
 
 env:
   global:
@@ -12,8 +13,8 @@ cache:
 
 install:
   # install dependencies
-  npm install -g serverless
-  npm install
+  - npm install -g serverless
+  - npm install
 
 script:
   - npm test
@@ -25,6 +26,6 @@ before_deploy:
 deploy:
   - provider: script
     script: scripts/deploy.sh stg
-    
+
 after_deploy:
   #

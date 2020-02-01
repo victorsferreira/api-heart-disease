@@ -39,17 +39,16 @@ function predictResponseBuilder(status) {
 }
 
 function serverIsReachable() {
-    // try {
-    //     const isIt = await isReachable('ip-172-31-82-220.ec2.internal:5000');
-    //     console.log("Is reachable: ", isIt);
-    //     res.send(`Is reachable: ${isIt}`);
-    // } catch (e) {
-    //     throw e;
-    // }
+    try {
+        const isIt = await isReachable('ip-172-31-82-220.ec2.internal:5000');
+        console.log("Is reachable: ", isIt);
+        res.send(`Is reachable: ${isIt}`);
+    } catch (e) {
+        throw e;
+    }
 }
 
 app.get('/api', async (req, res) => {
-    console.log(req.body);
     try {
         const result = await predictorProvider({ a: 1, b: 2 });
         const diseaseStatus = result[0];
@@ -68,7 +67,17 @@ app.get('/api', async (req, res) => {
 app.get('/foo', async (req, res) => {
     console.log(Date.now());
 
-    res.send('Teste de deploy');
+    try {
+        const result = serverIsReachable();
+        const response = `Is reachable? ${result}`;
+
+        res
+        .status(200)
+        .send(response);
+        
+    } catch (e) {
+        res.status(500).send("Error");
+    }
 });
 
 app.use((err, req, res) => {
