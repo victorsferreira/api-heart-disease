@@ -1,16 +1,16 @@
-service: new-service
+service: heart-disease
 provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, self:custom.defaultStage}
   profile: ${self:custom.profiles.${self:provider.stage}}
   role: arn:aws:iam::458701424327:role/lambda-default-permission
-  vpc: # Optional VPC. But if you use VPC then both subproperties (securityGroupIds and subnetIds) are required
-  securityGroupIds:
-    - sg-0d2e1db3bdf2b1a05
-  subnetIds:
-    - subnet-925340bc
-    - subnet-050c1962
+  # vpc: # Optional VPC. But if you use VPC then both subproperties (securityGroupIds and subnetIds) are required
+  # securityGroupIds:
+  #   - sg-0d2e1db3bdf2b1a05
+  # subnetIds:
+  #   - subnet-925340bc
+  #   - subnet-050c1962
   environment:
     PROVIDER_URL: ${self:custom.env.predictor.url}
 plugins:

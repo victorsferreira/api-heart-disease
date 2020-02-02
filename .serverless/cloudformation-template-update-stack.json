@@ -59,13 +59,13 @@
     "ApiLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/new-service-dev-api"
+        "LogGroupName": "/aws/lambda/heart-disease-dev-api"
       }
     },
     "FooLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/new-service-dev-foo"
+        "LogGroupName": "/aws/lambda/heart-disease-dev-foo"
       }
     },
     "ApiLambdaFunction": {
@@ -75,9 +75,9 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/new-service/dev/1580525543705-2020-02-01T02:52:23.705Z/new-service.zip"
+          "S3Key": "serverless/heart-disease/dev/1580527581913-2020-02-01T03:26:21.913Z/heart-disease.zip"
         },
-        "FunctionName": "new-service-dev-api",
+        "FunctionName": "heart-disease-dev-api",
         "Handler": "src/index.handler",
         "MemorySize": 1024,
         "Role": "arn:aws:iam::458701424327:role/lambda-default-permission",
@@ -93,14 +93,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionrzzVskLbuI5dLtC9SgdNWghyLys2nMY6LRjELB6DMUo": {
+    "ApiLambdaVersionFX6kYso80pu9UKiWwGzsVlmRjiWZREtOs7A5n6MCc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "3qtVVbAh9+f1TzWOtsp7XTmd9Hn9R3dsRyawp1GR1mQ="
+        "CodeSha256": "e5iQ9bYKG45SJOXMoLUsDsrpgL4xesAyRjTpyTh8Mio="
       }
     },
     "FooLambdaFunction": {
@@ -110,9 +110,9 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/new-service/dev/1580525543705-2020-02-01T02:52:23.705Z/new-service.zip"
+          "S3Key": "serverless/heart-disease/dev/1580527581913-2020-02-01T03:26:21.913Z/heart-disease.zip"
         },
-        "FunctionName": "new-service-dev-foo",
+        "FunctionName": "heart-disease-dev-foo",
         "Handler": "src/index.handler",
         "MemorySize": 1024,
         "Role": "arn:aws:iam::458701424327:role/lambda-default-permission",
@@ -128,20 +128,20 @@
         "FooLogGroup"
       ]
     },
-    "FooLambdaVersionPwCPsQFfUT9Bh1sAr9Ad3VQFv80uupB4BmcolNLpVU": {
+    "FooLambdaVersiongP8esi8e9XViMqgTbTm1pUPiveBGnvXbpb4aio9s": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "FooLambdaFunction"
         },
-        "CodeSha256": "3qtVVbAh9+f1TzWOtsp7XTmd9Hn9R3dsRyawp1GR1mQ="
+        "CodeSha256": "e5iQ9bYKG45SJOXMoLUsDsrpgL4xesAyRjTpyTh8Mio="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-new-service",
+        "Name": "dev-heart-disease",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -286,7 +286,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1580525487482": {
+    "ApiGatewayDeployment1580527568444": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -397,13 +397,13 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionrzzVskLbuI5dLtC9SgdNWghyLys2nMY6LRjELB6DMUo"
+        "Ref": "ApiLambdaVersionFX6kYso80pu9UKiWwGzsVlmRjiWZREtOs7A5n6MCc"
       }
     },
     "FooLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "FooLambdaVersionPwCPsQFfUT9Bh1sAr9Ad3VQFv80uupB4BmcolNLpVU"
+        "Ref": "FooLambdaVersiongP8esi8e9XViMqgTbTm1pUPiveBGnvXbpb4aio9s"
       }
     },
     "ServiceEndpoint": {
