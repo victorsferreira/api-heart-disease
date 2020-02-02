@@ -75,7 +75,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/heart-disease/dev/1580527581913-2020-02-01T03:26:21.913Z/heart-disease.zip"
+          "S3Key": "serverless/heart-disease/dev/1580674262316-2020-02-02T20:11:02.316Z/heart-disease.zip"
         },
         "FunctionName": "heart-disease-dev-api",
         "Handler": "src/index.handler",
@@ -93,14 +93,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionFX6kYso80pu9UKiWwGzsVlmRjiWZREtOs7A5n6MCc": {
+    "ApiLambdaVersion7fcw0NUwPcQmWXMahjGfvkteaeb8wF1FKETAUiOfA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "e5iQ9bYKG45SJOXMoLUsDsrpgL4xesAyRjTpyTh8Mio="
+        "CodeSha256": "MfDWz4yKIN6UF5Zdrt6Y7Jbdt4WABTmACMdaSz/YDFU="
       }
     },
     "FooLambdaFunction": {
@@ -110,7 +110,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/heart-disease/dev/1580527581913-2020-02-01T03:26:21.913Z/heart-disease.zip"
+          "S3Key": "serverless/heart-disease/dev/1580674262316-2020-02-02T20:11:02.316Z/heart-disease.zip"
         },
         "FunctionName": "heart-disease-dev-foo",
         "Handler": "src/index.handler",
@@ -128,14 +128,14 @@
         "FooLogGroup"
       ]
     },
-    "FooLambdaVersiongP8esi8e9XViMqgTbTm1pUPiveBGnvXbpb4aio9s": {
+    "FooLambdaVersionUd3R8wndivHK5I4t2RAK0LYTSLOCebAmEOH7iWBlW4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "FooLambdaFunction"
         },
-        "CodeSha256": "e5iQ9bYKG45SJOXMoLUsDsrpgL4xesAyRjTpyTh8Mio="
+        "CodeSha256": "MfDWz4yKIN6UF5Zdrt6Y7Jbdt4WABTmACMdaSz/YDFU="
       }
     },
     "ApiGatewayRestApi": {
@@ -286,7 +286,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1580527568444": {
+    "ApiGatewayDeployment1580674198644": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -397,13 +397,13 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionFX6kYso80pu9UKiWwGzsVlmRjiWZREtOs7A5n6MCc"
+        "Ref": "ApiLambdaVersion7fcw0NUwPcQmWXMahjGfvkteaeb8wF1FKETAUiOfA"
       }
     },
     "FooLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "FooLambdaVersiongP8esi8e9XViMqgTbTm1pUPiveBGnvXbpb4aio9s"
+        "Ref": "FooLambdaVersionUd3R8wndivHK5I4t2RAK0LYTSLOCebAmEOH7iWBlW4"
       }
     },
     "ServiceEndpoint": {

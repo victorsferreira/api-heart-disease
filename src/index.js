@@ -2,7 +2,7 @@ const serverless = require('serverless-http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-// const isReachable = require('is-reachable');
+const isReachable = require('is-reachable');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,7 +24,7 @@ async function predictorProvider(data) {
             url,
             data
         );
-
+        
         return response.data;
     } catch (e) {
         throw e;
@@ -41,8 +41,8 @@ function predictResponseBuilder(status) {
 async function serverIsReachable() {
     try {
         const isIt = await isReachable(process.env.PROVIDER_URL);
-        console.log("Is reachable: ", isIt);
-        res.send(`Is reachable: ${isIt}`);
+        console.log(`Is reachable ${process.env.PROVIDER_URL}: ${isIt}`);
+        return isIt;
     } catch (e) {
         throw e;
     }
@@ -52,16 +52,16 @@ app.get('/api', async (req, res) => {
     try {
         const result = await predictorProvider({ a: 1, b: 2 });
         const diseaseStatus = result[0];
-        console.log('predictorProvider', result);
+        // console.log('predictorProvider', result);
         const response = predictResponseBuilder(diseaseStatus);
 
         res
         .status(200)
-        .send(response);
+        .json(response);
         
     } catch (e) {
         console.log(`Error: ${e.message}`);
-        res.status(500).send("Error");
+        res.status(500).json("Error");
     }
 });
 
@@ -74,17 +74,17 @@ app.get('/foo', async (req, res) => {
 
         res
         .status(200)
-        .send(response);
+        .json(response);
         
     } catch (e) {
         console.log(`Error: ${e.message}`);
-        res.status(500).send("Error");
+        res.status(500).json("Error");
     }
 });
 
 app.use((err, req, res) => {
     console.log(err.message);
-    res.status(500).send(err.stack);
+    res.status(500).json(err.stack);
 });
 
 module.exports.handler = serverless(app);
