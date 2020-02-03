@@ -27,6 +27,7 @@ async function predictorProvider(data) {
 
         return response.data;
     } catch (e) {
+        console.log(`Error: ${e.message}`);
         throw e;
     }
 }
@@ -50,7 +51,9 @@ async function serverIsReachable() {
 
 app.get('/api', async (req, res) => {
     try {
+        console.log("Starting to process /api");
         const result = await predictorProvider({ a: 1, b: 2 });
+        console.log("Got prediction", result);
         const diseaseStatus = result[0];
         // console.log('predictorProvider', result);
         const response = predictResponseBuilder(diseaseStatus);
@@ -83,7 +86,7 @@ app.get('/foo', async (req, res) => {
 });
 
 app.use((err, req, res) => {
-    console.log(err.message);
+    console.log(`Error found: ${err.message}`);
     res.status(500).json(err.stack);
 });
 
