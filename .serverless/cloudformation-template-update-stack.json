@@ -59,13 +59,90 @@
     "ApiLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/heart-disease-dev-api"
+        "LogGroupName": "/aws/lambda/heart-disease-stg-api"
       }
     },
     "FooLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/heart-disease-dev-foo"
+        "LogGroupName": "/aws/lambda/heart-disease-stg-foo"
+      }
+    },
+    "IamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "stg",
+                  "heart-disease",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:CreateLogGroup"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/heart-disease-stg*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/heart-disease-stg*:*:*"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "heart-disease",
+              "stg",
+              {
+                "Ref": "AWS::Region"
+              },
+              "lambdaRole"
+            ]
+          ]
+        }
       }
     },
     "ApiLambdaFunction": {
@@ -75,32 +152,38 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/heart-disease/dev/1580674262316-2020-02-02T20:11:02.316Z/heart-disease.zip"
+          "S3Key": "serverless/heart-disease/stg/1580699235416-2020-02-03T03:07:15.416Z/heart-disease.zip"
         },
-        "FunctionName": "heart-disease-dev-api",
+        "FunctionName": "heart-disease-stg-api",
         "Handler": "src/index.handler",
         "MemorySize": 1024,
-        "Role": "arn:aws:iam::458701424327:role/lambda-default-permission",
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs12.x",
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "PROVIDER_URL": "http://localhost:5000"
+            "PROVIDER_URL": "http://ip-172-31-82-220.ec2.internal:5000"
           }
         }
       },
       "DependsOn": [
-        "ApiLogGroup"
+        "ApiLogGroup",
+        "IamRoleLambdaExecution"
       ]
     },
-    "ApiLambdaVersion7fcw0NUwPcQmWXMahjGfvkteaeb8wF1FKETAUiOfA": {
+    "ApiLambdaVersionTdLslUbgv3URllLHmVcLoRLjOC6m0Yl4QKzdKaOUnAs": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "MfDWz4yKIN6UF5Zdrt6Y7Jbdt4WABTmACMdaSz/YDFU="
+        "CodeSha256": "pPSCunYfctu8tM90DWw2H2XwAxCIRTWJEURil8yINpo="
       }
     },
     "FooLambdaFunction": {
@@ -110,38 +193,44 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/heart-disease/dev/1580674262316-2020-02-02T20:11:02.316Z/heart-disease.zip"
+          "S3Key": "serverless/heart-disease/stg/1580699235416-2020-02-03T03:07:15.416Z/heart-disease.zip"
         },
-        "FunctionName": "heart-disease-dev-foo",
+        "FunctionName": "heart-disease-stg-foo",
         "Handler": "src/index.handler",
         "MemorySize": 1024,
-        "Role": "arn:aws:iam::458701424327:role/lambda-default-permission",
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs12.x",
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "PROVIDER_URL": "http://localhost:5000"
+            "PROVIDER_URL": "http://ip-172-31-82-220.ec2.internal:5000"
           }
         }
       },
       "DependsOn": [
-        "FooLogGroup"
+        "FooLogGroup",
+        "IamRoleLambdaExecution"
       ]
     },
-    "FooLambdaVersionUd3R8wndivHK5I4t2RAK0LYTSLOCebAmEOH7iWBlW4": {
+    "FooLambdaVersion1EgY4jJ83B717QfnwucFTmA326aupEQM9akURCRtw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "FooLambdaFunction"
         },
-        "CodeSha256": "MfDWz4yKIN6UF5Zdrt6Y7Jbdt4WABTmACMdaSz/YDFU="
+        "CodeSha256": "pPSCunYfctu8tM90DWw2H2XwAxCIRTWJEURil8yINpo="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-heart-disease",
+        "Name": "stg-heart-disease",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -286,13 +375,13 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1580674198644": {
+    "ApiGatewayDeployment1580699189352": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         },
-        "StageName": "dev"
+        "StageName": "stg"
       },
       "DependsOn": [
         "ApiGatewayMethodApiGet",
@@ -397,13 +486,13 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersion7fcw0NUwPcQmWXMahjGfvkteaeb8wF1FKETAUiOfA"
+        "Ref": "ApiLambdaVersionTdLslUbgv3URllLHmVcLoRLjOC6m0Yl4QKzdKaOUnAs"
       }
     },
     "FooLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "FooLambdaVersionUd3R8wndivHK5I4t2RAK0LYTSLOCebAmEOH7iWBlW4"
+        "Ref": "FooLambdaVersion1EgY4jJ83B717QfnwucFTmA326aupEQM9akURCRtw"
       }
     },
     "ServiceEndpoint": {
@@ -424,7 +513,7 @@
             {
               "Ref": "AWS::URLSuffix"
             },
-            "/dev"
+            "/stg"
           ]
         ]
       }

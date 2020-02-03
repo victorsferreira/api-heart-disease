@@ -1,3 +1,26 @@
+### AWS
+
+EC2 Security Group must have an Inbound Rule to allow traffic on port <PORT> and source the same as the Subnet IP Address. Must also allow all traffic as an Outbound Rule
+
+I.E.: 
+Custom TCP Rule TCP     5000    <sg-ID>
+All traffic     All     All     0.0.0.0/0
+
+Create a second Security Group for Lambda. It doesn't need to have any Inbound Rule. Outbound is default as follows:
+All traffic     All     All     0.0.0.0/0
+
+Lambda Role Policies must contain
+- CloudWatchLogsFullAccess
+- AWSLambdaVPCAccessExecutionRole
+
+In the Lambda Panel
+
+For the Virtual Private Cloud (VPC) option select the VPC that contains both the Lambda's and EC2's Security Groups.
+
+In the Subnets options, select the EC2 Subnet ID.
+
+For Security Groups, select the Lambda's Security Group recently created.
+
 ### Attributes
 
 age: age in years

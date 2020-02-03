@@ -24,7 +24,7 @@ async function predictorProvider(data) {
             url,
             data
         );
-        
+
         return response.data;
     } catch (e) {
         throw e;
@@ -40,7 +40,7 @@ function predictResponseBuilder(status) {
 
 async function serverIsReachable() {
     try {
-        const isIt = await isReachable(process.env.PROVIDER_URL);
+        const isIt = await isReachable('ip-172-31-82-220.ec2.internal:5000');
         console.log(`Is reachable ${process.env.PROVIDER_URL}: ${isIt}`);
         return isIt;
     } catch (e) {
@@ -56,9 +56,9 @@ app.get('/api', async (req, res) => {
         const response = predictResponseBuilder(diseaseStatus);
 
         res
-        .status(200)
-        .json(response);
-        
+            .status(200)
+            .json(response);
+
     } catch (e) {
         console.log(`Error: ${e.message}`);
         res.status(500).json("Error");
@@ -73,9 +73,9 @@ app.get('/foo', async (req, res) => {
         const response = `Is reachable? ${result}`;
 
         res
-        .status(200)
-        .json(response);
-        
+            .status(200)
+            .json(response);
+
     } catch (e) {
         console.log(`Error: ${e.message}`);
         res.status(500).json("Error");
