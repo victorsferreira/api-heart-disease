@@ -15,6 +15,7 @@ install:
   # install dependencies
   - npm install -g serverless
   - npm install
+  - echo $TRAVIS_TAG
 
 script:
   - npm test
@@ -34,7 +35,6 @@ deploy:
     on:
       tags: true
       condition: $TRAVIS_TAG =~ /^(prd-.+)$/
-  # Add production deploy on Tag
 
 after_deploy:
   #
