@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Should implement tests\"; exit 0",
+    "test": "npm run lint",
     "test-unit": "mocha -r ts-node/register .test/unit/**/*.spec.ts",
     "test-integration": "",
     "start": "npm run build && sls offline",
