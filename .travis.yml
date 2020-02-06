@@ -34,7 +34,7 @@ deploy:
     script: scripts/deploy.sh prd
     on:
       tags: true
-      condition: $TRAVIS_TAG =~ /^(prd-.+)$/
+      # condition: $TRAVIS_TAG =~ /^(prd-.+)$/
 
 after_deploy:
   #
