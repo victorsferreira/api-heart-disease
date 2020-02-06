@@ -24,8 +24,17 @@ before_deploy:
   #
 
 deploy:
+  # Deploys to STG if merged in Master
   - provider: script
     script: scripts/deploy.sh stg
+    on:
+      tags: false
+  - provider: script
+    script: scripts/deploy.sh prd
+    on:
+      tags: true
+      condition: $TRAVIS_TAG =~ /^(prd-.+)$/
+  # Add production deploy on Tag
 
 after_deploy:
   #
