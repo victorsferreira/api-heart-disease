@@ -13,9 +13,10 @@ cache:
 
 install:
   # install dependencies
+  - echo $TRAVIS_TAG
+  - echo $TRAVIS_BRANCH
   - npm install -g serverless
   - npm install
-  - echo $TRAVIS_TAG
 
 script:
   - npm test
@@ -34,7 +35,7 @@ deploy:
     script: scripts/deploy.sh prd
     on:
       tags: true
-      # condition: $TRAVIS_TAG =~ /^(prd-.+)$/
+      condition: $TRAVIS_TAG =~ ^prd-.*$
 
 after_deploy:
   #
