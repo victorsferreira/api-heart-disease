@@ -73,19 +73,60 @@ Content-Type: application/json
 
 Body:
 {
-        age: "",
-        sex: "",
-        cp: "",
-        trestbps: "",
-        chol: "",
-        fbs: "",
-        restecg: "",
-        thalach: "",
-        exang: "",
-        oldpeak: "",
-        slope: "",
-        ca: "",
-        thal: ""
+        "age": "0",
+        "sex": "0",
+        "cp": "0",
+        "trestbps": "0",
+        "chol": "0",
+        "fbs": "0",
+        "restecg": "0",
+        "thalach": "0",
+        "exang": "0",
+        "oldpeak": "0",
+        "slope": "0",
+        "ca": "0",
+        "thal": "0"
 }
 
+cURL
+curl --request POST \
+  --url http://localhost:3000/predict \
+  --header 'content-type: application/json' \
+  --data '{
+        "age": 0,
+        "sex": 0,
+        "cp": 1,
+        "trestbps": 0,
+        "chol": 0,
+        "fbs": true,
+        "restecg": 0,
+        "thalach": 0,
+        "exang": true,
+        "oldpeak": 0,
+        "slope": 1,
+        "ca": 0,
+        "thal": 3
+}'
+
 ### Response example
+
+
+### Source Organization
+
+Controller: the entry point of each request. It forwards and controls the execution to finally send a response to the client.
+
+Service: Encapsulates the business logic
+
+Repository: Centralizes rules of data retrieving, related to the application business and entity domain. It could use DAO to retrieve data. Good for larger applications where another layer of abstraction will help reutilization in different components.
+
+DAO: Generic implementation of retrieving data in agnostic format and presisting them in the database. Abstract queries. Necessary if ORM is not used.
+
+DTO: Represents an entry in the database. Used to transfer data between layers of the application. Can be used as the application model.
+
+Model: Represents the entities of the application. May contain validation, persistance and other actions.
+
+ParamValidator: Helper that validates the inputs
+
+ParamConverter: Helper that transforms the inputs in more useful objects
+
+ReponseBuilder: Helper that returns the elements of an API response.

@@ -22,16 +22,16 @@ custom:
     dev: default
     prod: default
 functions:
-  api:
-    handler: src/index.handler
+  predict:
+    handler: dist/index.handler
     timeout: 20
     events:
       - http: 
-          path: api
-          method: get
+          path: predict
+          method: post
           # cors: true
   foo:
-    handler: src/index.handler
+    handler: dist/index.handler
     events: 
       - http: 
           path: foo
