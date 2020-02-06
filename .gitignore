@@ -1,4 +1,4 @@
 node_modules/
 .serverless/
-dist/**/*.js
-dist/**/*.map
+dist/
+!dist/.gitkeep
