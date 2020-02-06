@@ -13,7 +13,7 @@ cache:
 
 install:
   # install dependencies
-  - npm install -g serverless
+  - npm install -g serverless tslint
   - npm install
 
 script:
