@@ -2,9 +2,9 @@ language: node_js
 node_js: 
   - "12"
 
-env:
-  global:
-    - GLOBAL_VAR=...
+# env:
+#   global:
+#     - GLOBAL_VAR=
     
 cache:
   npm: true
@@ -12,15 +12,13 @@ cache:
     - node_modules
 
 install:
-  # install dependencies
   - npm install -g serverless tslint typescript
   - npm install
 
 script:
   - npm test
 
-before_deploy:
-  #
+# before_deploy:
 
 deploy:
   # Deploys to STG if merged in Master
@@ -35,5 +33,4 @@ deploy:
       tags: true
       condition: $TRAVIS_TAG =~ ^prd-.*$
 
-after_deploy:
-  #
+# after_deploy:

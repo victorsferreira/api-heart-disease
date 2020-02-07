@@ -23,17 +23,17 @@ custom:
     prod: default
 functions:
   predict:
-    handler: dist/index.handler
+    handler: dist/src/index.handler
     timeout: 20
     events:
       - http: 
           path: predict
           method: post
           # cors: true
-  foo:
-    handler: dist/index.handler
+  healthcheck:
+    handler: dist/src/index.handler
     events: 
       - http: 
-          path: foo
+          path: healthcheck
           method: get
           # cors: true

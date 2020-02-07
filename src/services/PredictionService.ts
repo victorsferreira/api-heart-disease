@@ -1,6 +1,7 @@
 // import BaseService from "../libs/BaseService";
 import axios, { AxiosResponse } from 'axios';
-import { IPredictionData } from '../controllers/PredictionController';
+import isReachable from 'is-reachable';
+import { IPredictionData } from '../params-converters/PredictionParamsConverter';
 
 type HeartDiseaseState = 0 | 1 | 2 | 3 | 4;
 
@@ -13,6 +14,16 @@ export default class PredictionService
 {
     constructor() {
         // super();
+    }
+
+    async verifyIfServerIsReachable(): Promise<boolean> {
+        try {
+            const serverIsReachable = await isReachable(process.env.PROVIDER_URL);
+            console.log(`Is reachable ${process.env.PROVIDER_URL}: ${serverIsReachable}`);
+            return serverIsReachable;
+        } catch (error) {
+            throw error;
+        }
     }
 
     public async makeSinglePrediction(data: IPredictionData): Promise<HeartDiseaseState> {

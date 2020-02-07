@@ -125,8 +125,17 @@ DTO: Represents an entry in the database. Used to transfer data between layers o
 
 Model: Represents the entities of the application. May contain validation, persistance and other actions.
 
+DataMapper: Transforms objects in something different to be transfered.
+
 ParamValidator: Helper that validates the inputs
 
 ParamConverter: Helper that transforms the inputs in more useful objects
 
 ReponseBuilder: Helper that returns the elements of an API response.
+
+### Why Typescript?
+Reinforces good practices 
+Make the code better documented
+Prevents neglects due to bad changes
+Allows you to anticipate possible errors
+Helps building a better written code

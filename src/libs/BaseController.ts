@@ -1,19 +1,31 @@
+import { Request, Response, NextFunction, Router } from 'express';
+
+type Fn = () => any;
+
 type AnyClass = {
     new(): any; // tslint:disable-line
 };
+
+// Subclass of Abstract class
+type AnyControllerClass = new () => BaseController;
 
 interface IControllerMeta {
     req: Request;
     res: Response;
 }
 
-import { Request, Response, NextFunction } from 'express';
-
-export default class BaseController {
+export default abstract class BaseController {
     private req: Request;
     private res: Response;
 
-    static action(ControllerClass: AnyClass, methodName: string) {
+    static route(method: string, path, ControllerClass: AnyControllerClass, methodName: string, middlewares:Fn[] = []): Router {
+        const router = Router();
+        router[method](path, middlewares, BaseController.action(ControllerClass, methodName));
+
+        return router;
+    }
+
+    static action(ControllerClass: AnyControllerClass, methodName: string) {
         return (req: Request, res: Response, next: NextFunction) => {
             const object = new ControllerClass();
             // Injecting Req and Res
@@ -23,7 +35,7 @@ export default class BaseController {
 
             if (methodName in object) object[methodName](req, res, next);
             else {
-                const error = new Error(`An action method was not found [${ControllerClass.constructor.name}] [${methodName}]`);
+                const error = new Error(`The Controllers's method was not found [${ControllerClass.constructor.name}] [${methodName}]`);
                 // tslint:disable-next-line: no-console
                 console.error(error.message);
                 next(error);
