@@ -7,7 +7,7 @@
     "test-unit": "mocha -r ts-node/register .test/unit/**/*.spec.ts",
     "test-integration": "",
     "start": "npm run build && sls offline",
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && ./node_modules/.bin/tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "deploy:stg": "npm run build && serverless deploy -s stg",
     "deploy:prd": "npm run build && serverless deploy -s prd",
