@@ -12,7 +12,6 @@ cache:
     - node_modules
 
 install:
-  - npm install -g serverless tslint typescript
   - npm install
 
 script:
