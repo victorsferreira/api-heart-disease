@@ -2,11 +2,15 @@ import Helpers from "../libs/Helpers";
 import { Request, Response, NextFunction } from 'express';
 import { IPredictRequestParams } from '../validators/PredictionValidator';
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-
-export interface IConvertedRequest extends Request {
-    inputs: object;
+declare global {
+    namespace Express {
+        interface Request {
+            inputs: object;
+        }
+    }
 }
+
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 // Could also have created a generic Interface
 // anpm run build && serverless deploy -s stgnd extend it for both cases
@@ -15,8 +19,9 @@ export interface IPredictionData extends Omit<IPredictRequestParams, "fbs" | "ex
     exang: 0 | 1;
 }
 
+// tslint:disable-next-line
 export default class PredictionParamConverter {
-    static convertPredictParams(req: IConvertedRequest, _res: Response, next: NextFunction): void {
+    static convertPredictParams(req: Request, _res: Response, next: NextFunction): void {
         const params = req.body;
         const { fbs, exang } = params;
         const intFbs = Helpers.boolToInt(fbs);
