@@ -7,9 +7,9 @@ node_js:
 #     - GLOBAL_VAR=
     
 cache:
-  npm: true
-  directories:
-    - node_modules
+  npm: false
+  # directories:
+  #   - node_modules
 
 install:
   - npm install

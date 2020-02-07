@@ -9,7 +9,7 @@ export interface IConvertedRequest extends Request {
 }
 
 // Could also have created a generic Interface
-// and extend it for both cases
+// anpm run build && serverless deploy -s stgnd extend it for both cases
 export interface IPredictionData extends Omit<IPredictRequestParams, "fbs" | "exang"> {
     fbs: 0 | 1;
     exang: 0 | 1;
