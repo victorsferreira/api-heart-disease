@@ -5,13 +5,11 @@
       "name": "heart-disease"
     },
     "provider": {
-      "stage": "stg",
+      "stage": "prd",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*?]+?)}",
       "name": "aws",
       "runtime": "nodejs12.x",
-      "environment": {
-        "PROVIDER_URL": "http://ip-172-31-82-220.ec2.internal:5000"
-      },
+      "environment": {},
       "region": "us-east-1",
       "versionFunctions": true,
       "remoteFunctionData": null,
@@ -73,16 +71,16 @@
               }
             }
           },
-          "ApiLogGroup": {
+          "PredictLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/heart-disease-stg-api"
+              "LogGroupName": "/aws/lambda/heart-disease-prd-predict"
             }
           },
-          "FooLogGroup": {
+          "HealthcheckLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/heart-disease-stg-foo"
+              "LogGroupName": "/aws/lambda/heart-disease-prd-healthcheck"
             }
           },
           "IamRoleLambdaExecution": {
@@ -110,7 +108,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "stg",
+                        "prd",
                         "heart-disease",
                         "lambda"
                       ]
@@ -127,7 +125,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/heart-disease-stg*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/heart-disease-prd*:*"
                           }
                         ]
                       },
@@ -138,7 +136,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/heart-disease-stg*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/heart-disease-prd*:*:*"
                           }
                         ]
                       }
@@ -152,7 +150,7 @@
                   "-",
                   [
                     "heart-disease",
-                    "stg",
+                    "prd",
                     {
                       "Ref": "AWS::Region"
                     },
@@ -162,17 +160,17 @@
               }
             }
           },
-          "ApiLambdaFunction": {
+          "PredictLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/heart-disease/stg/1580699235416-2020-02-03T03:07:15.416Z/heart-disease.zip"
+                "S3Key": "serverless/heart-disease/prd/1581105801449-2020-02-07T20:03:21.449Z/heart-disease.zip"
               },
-              "FunctionName": "heart-disease-stg-api",
-              "Handler": "src/index.handler",
+              "FunctionName": "heart-disease-prd-predict",
+              "Handler": "dist/src/index.handler",
               "MemorySize": 1024,
               "Role": {
                 "Fn::GetAtt": [
@@ -181,39 +179,37 @@
                 ]
               },
               "Runtime": "nodejs12.x",
-              "Timeout": 6,
+              "Timeout": 20,
               "Environment": {
-                "Variables": {
-                  "PROVIDER_URL": "http://ip-172-31-82-220.ec2.internal:5000"
-                }
+                "Variables": {}
               }
             },
             "DependsOn": [
-              "ApiLogGroup",
+              "PredictLogGroup",
               "IamRoleLambdaExecution"
             ]
           },
-          "ApiLambdaVersionTdLslUbgv3URllLHmVcLoRLjOC6m0Yl4QKzdKaOUnAs": {
+          "PredictLambdaVersionbiMsFdiKElBnJsL2R9TUC7o2Uw28DHvAaOmDwcxKo": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "ApiLambdaFunction"
+                "Ref": "PredictLambdaFunction"
               },
-              "CodeSha256": "pPSCunYfctu8tM90DWw2H2XwAxCIRTWJEURil8yINpo="
+              "CodeSha256": "+TflgoToQJFQt1Tsn3kMInHuqYhKaE1lCKFwYEDDqpc="
             }
           },
-          "FooLambdaFunction": {
+          "HealthcheckLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/heart-disease/stg/1580699235416-2020-02-03T03:07:15.416Z/heart-disease.zip"
+                "S3Key": "serverless/heart-disease/prd/1581105801449-2020-02-07T20:03:21.449Z/heart-disease.zip"
               },
-              "FunctionName": "heart-disease-stg-foo",
-              "Handler": "src/index.handler",
+              "FunctionName": "heart-disease-prd-healthcheck",
+              "Handler": "dist/src/index.handler",
               "MemorySize": 1024,
               "Role": {
                 "Fn::GetAtt": [
@@ -224,59 +220,37 @@
               "Runtime": "nodejs12.x",
               "Timeout": 6,
               "Environment": {
-                "Variables": {
-                  "PROVIDER_URL": "http://ip-172-31-82-220.ec2.internal:5000"
-                }
+                "Variables": {}
               }
             },
             "DependsOn": [
-              "FooLogGroup",
+              "HealthcheckLogGroup",
               "IamRoleLambdaExecution"
             ]
           },
-          "FooLambdaVersion1EgY4jJ83B717QfnwucFTmA326aupEQM9akURCRtw": {
+          "HealthcheckLambdaVersiontApKYjHX1iaM9JCrXvon9wwuEnxAFgcaFVWgoruDw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "FooLambdaFunction"
+                "Ref": "HealthcheckLambdaFunction"
               },
-              "CodeSha256": "pPSCunYfctu8tM90DWw2H2XwAxCIRTWJEURil8yINpo="
+              "CodeSha256": "+TflgoToQJFQt1Tsn3kMInHuqYhKaE1lCKFwYEDDqpc="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "stg-heart-disease",
+              "Name": "prd-heart-disease",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
                 ]
               },
-              "Policy": {
-                "Version": "2012-10-17",
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": "*",
-                    "Action": "execute-api:Invoke",
-                    "Resource": [
-                      "execute-api:/*/*/*"
-                    ],
-                    "Condition": {
-                      "IpAddress": {
-                        "aws:SourceIp": [
-                          "0.0.0.0/0",
-                          "::/0"
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
+              "Policy": ""
             }
           },
-          "ApiGatewayResourceApi": {
+          "ApiGatewayResourcePredict": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
@@ -285,13 +259,13 @@
                   "RootResourceId"
                 ]
               },
-              "PathPart": "api",
+              "PathPart": "predict",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayResourceFoo": {
+          "ApiGatewayResourceHealthcheck": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
@@ -300,19 +274,19 @@
                   "RootResourceId"
                 ]
               },
-              "PathPart": "foo",
+              "PathPart": "healthcheck",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayMethodApiGet": {
+          "ApiGatewayMethodPredictPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
-              "HttpMethod": "GET",
+              "HttpMethod": "POST",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceApi"
+                "Ref": "ApiGatewayResourcePredict"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -337,7 +311,7 @@
                       ":lambda:path/2015-03-31/functions/",
                       {
                         "Fn::GetAtt": [
-                          "ApiLambdaFunction",
+                          "PredictLambdaFunction",
                           "Arn"
                         ]
                       },
@@ -349,13 +323,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodFooGet": {
+          "ApiGatewayMethodHealthcheckGet": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "GET",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceFoo"
+                "Ref": "ApiGatewayResourceHealthcheck"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -380,7 +354,7 @@
                       ":lambda:path/2015-03-31/functions/",
                       {
                         "Fn::GetAtt": [
-                          "FooLambdaFunction",
+                          "HealthcheckLambdaFunction",
                           "Arn"
                         ]
                       },
@@ -392,33 +366,26 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1580699189352": {
+          "ApiGatewayDeployment1581105712257": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               },
-              "StageName": "stg"
+              "StageName": "prd"
             },
             "DependsOn": [
-              "ApiGatewayMethodApiGet",
-              "ApiGatewayMethodFooGet"
+              "ApiGatewayMethodPredictPost",
+              "ApiGatewayMethodHealthcheckGet"
             ]
           },
-          "ApiLambdaPermissionApiGateway": {
+          "PredictLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
-                "Fn::Join": [
-                  ":",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "ApiLambdaFunction",
-                        "Arn"
-                      ]
-                    }
-                  ]
+                "Fn::GetAtt": [
+                  "PredictLambdaFunction",
+                  "Arn"
                 ]
               },
               "Action": "lambda:InvokeFunction",
@@ -449,20 +416,13 @@
               }
             }
           },
-          "FooLambdaPermissionApiGateway": {
+          "HealthcheckLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
-                "Fn::Join": [
-                  ":",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "FooLambdaFunction",
-                        "Arn"
-                      ]
-                    }
-                  ]
+                "Fn::GetAtt": [
+                  "HealthcheckLambdaFunction",
+                  "Arn"
                 ]
               },
               "Action": "lambda:InvokeFunction",
@@ -500,16 +460,16 @@
               "Ref": "ServerlessDeploymentBucket"
             }
           },
-          "ApiLambdaFunctionQualifiedArn": {
+          "PredictLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionTdLslUbgv3URllLHmVcLoRLjOC6m0Yl4QKzdKaOUnAs"
+              "Ref": "PredictLambdaVersionbiMsFdiKElBnJsL2R9TUC7o2Uw28DHvAaOmDwcxKo"
             }
           },
-          "FooLambdaFunctionQualifiedArn": {
+          "HealthcheckLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "FooLambdaVersion1EgY4jJ83B717QfnwucFTmA326aupEQM9akURCRtw"
+              "Ref": "HealthcheckLambdaVersiontApKYjHX1iaM9JCrXvon9wwuEnxAFgcaFVWgoruDw"
             }
           },
           "ServiceEndpoint": {
@@ -530,7 +490,7 @@
                   {
                     "Ref": "AWS::URLSuffix"
                   },
-                  "/stg"
+                  "/prd"
                 ]
               ]
             }
@@ -607,11 +567,6 @@
       "vpc": {}
     },
     "custom": {
-      "env": {
-        "predictor": {
-          "url": "http://ip-172-31-82-220.ec2.internal:5000"
-        }
-      },
       "defaultStage": "dev",
       "profiles": {
         "dev": "default",
@@ -623,51 +578,52 @@
     ],
     "pluginsData": {},
     "functions": {
-      "api": {
-        "handler": "src/index.handler",
+      "predict": {
+        "handler": "dist/src/index.handler",
+        "timeout": 20,
         "events": [
           {
             "http": {
-              "path": "api",
-              "method": "get",
+              "path": "predict",
+              "method": "post",
               "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "heart-disease-stg-api",
+        "name": "heart-disease-prd-predict",
         "package": {},
         "memory": 1024,
-        "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionTdLslUbgv3URllLHmVcLoRLjOC6m0Yl4QKzdKaOUnAs"
+        "versionLogicalId": "PredictLambdaVersionbiMsFdiKElBnJsL2R9TUC7o2Uw28DHvAaOmDwcxKo"
       },
-      "foo": {
-        "handler": "src/index.handler",
+      "healthcheck": {
+        "handler": "dist/src/index.handler",
         "events": [
           {
             "http": {
-              "path": "foo",
+              "path": "healthcheck",
               "method": "get",
               "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "heart-disease-stg-foo",
+        "name": "heart-disease-prd-healthcheck",
         "package": {},
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "FooLambdaVersion1EgY4jJ83B717QfnwucFTmA326aupEQM9akURCRtw"
+        "versionLogicalId": "HealthcheckLambdaVersiontApKYjHX1iaM9JCrXvon9wwuEnxAFgcaFVWgoruDw"
       }
     },
     "serviceFilename": "serverless.yml",
     "layers": {},
+    "isDashboardMonitoringPreconfigured": false,
     "artifact": "/home/victor/projects/heart-disease/api/.serverless/heart-disease.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/heart-disease/stg/1580699235416-2020-02-03T03:07:15.416Z",
+    "artifactDirectoryName": "serverless/heart-disease/prd/1581105801449-2020-02-07T20:03:21.449Z",
     "artifact": "heart-disease.zip"
   }
 }

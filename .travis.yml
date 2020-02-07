@@ -23,12 +23,12 @@ script:
 deploy:
   # Deploys to STG if merged in Master
   - provider: script
-    script: scripts/deploy.sh stg
+    script: npm run deploy:stg #scripts/deploy.sh stg
     on:
       tags: false
   # Deploys to PRD if Tag starts with prd-
   - provider: script
-    script: scripts/deploy.sh prd
+    script: npm run deploy:prd #scripts/deploy.sh prd
     on:
       tags: true
       condition: $TRAVIS_TAG =~ ^prd-.*$

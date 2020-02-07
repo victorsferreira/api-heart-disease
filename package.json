@@ -9,6 +9,8 @@
     "start": "npm run build && sls offline",
     "build": "rm -rf dist && tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "deploy:stg": "npm run build && serverless deploy -s stg",
+    "deploy:prd": "npm run build && serverless deploy -s prd",
     "debug-vscode": "npm run build && export SLS_DEBUG=* && node --inspect ./node_modules/.bin/serverless offline"
   },
   "keywords": [],
@@ -23,8 +25,7 @@
     "is-reachable": "^4.0.0",
     "serverless-http": "^2.3.0",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
-    "typescript": "^3.7.4"
+    "socket.io-client": "^2.3.0"
   },
   "directories": {
     "test": "test"
@@ -38,7 +39,8 @@
     "mocha": "^7.0.1",
     "serverless": "^1.63.0",
     "serverless-offline": "^5.12.1",
-    "ts-node": "^8.6.2"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.4"
   },
   "description": ""
 }
