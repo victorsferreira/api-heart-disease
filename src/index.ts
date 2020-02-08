@@ -1,8 +1,8 @@
 // import express = require("express");
 import express from 'express';
-import routes from './routes';
 import serverless = require("serverless-http");
 import * as bodyParser from 'body-parser';
+import routes from './routes';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
