@@ -1,4 +1,5 @@
-import express = require("express");
+// import express = require("express");
+import express from 'express';
 import routes from './routes';
 import serverless = require("serverless-http");
 import * as bodyParser from 'body-parser';
