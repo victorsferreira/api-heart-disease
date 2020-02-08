@@ -8,30 +8,28 @@ node_js:
     
 cache:
   npm: false
+  yarn: false
   # directories:
   #   - node_modules
 
 install:
-  - npm i -g serverless
-  - npm i -g typescript
-  - npm i -g tslint
-  - npm install
-  - npm list -g --depth=0
-  - npm list --depth=0
+  - yarn install
 
 script:
-  - npm test
+  - yarn test
 
 # before_deploy:
 
 deploy:
   # Deploys to STG if merged in Master
   - provider: script
+    skip_cleanup: true
     script: scripts/deploy.sh stg #npm run deploy:stg #scripts/deploy.sh stg
     on:
       tags: false
   # Deploys to PRD if Tag starts with prd-
   - provider: script
+    skip_cleanup: true
     script: npm run deploy:prd #scripts/deploy.sh prd
     on:
       tags: true
