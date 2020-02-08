@@ -17,6 +17,7 @@ install:
   - npm i -g tslint
   - npm install
   - npm list -g --depth=0
+  - npm list --depth=0
 
 script:
   - npm test
