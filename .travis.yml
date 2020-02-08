@@ -27,7 +27,7 @@ script:
 deploy:
   # Deploys to STG if merged in Master
   - provider: script
-    script: npm run deploy:stg #scripts/deploy.sh stg
+    script: scripts/deploy.sh stg #npm run deploy:stg #scripts/deploy.sh stg
     on:
       tags: false
   # Deploys to PRD if Tag starts with prd-
