@@ -12,7 +12,8 @@ provider:
   #   - subnet-925340bc
   #   - subnet-050c1962
   environment:
-    PROVIDER_URL: ${self:custom.env.predictor.url}
+    PREDICTOR_URL: ${self:custom.env.predictor.url}
+    PREDICTOR_DEV_PORT: ${self:custom.env.predictor.devPort}
 plugins:
   - serverless-offline
 custom:

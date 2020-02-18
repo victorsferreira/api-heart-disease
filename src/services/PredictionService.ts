@@ -18,8 +18,8 @@ export default class PredictionService
 
     async verifyIfServerIsReachable(): Promise<boolean> {
         try {
-            const serverIsReachable = await isReachable(process.env.PROVIDER_URL);
-            console.log(`Is reachable ${process.env.PROVIDER_URL}: ${serverIsReachable}`);
+            const serverIsReachable = await isReachable(process.env.PREDICTOR_URL);
+            console.log(`Is reachable ${process.env.PREDICTOR_URL}: ${serverIsReachable}`);
             return serverIsReachable;
         } catch (error) {
             throw error;
@@ -44,7 +44,7 @@ export default class PredictionService
 
     async fetchPrediction(data): Promise<AxiosResponse> {
         try {
-            const url = `${process.env.PROVIDER_URL}/predict`;
+            const url = `${process.env.PREDICTOR_URL}/predict`;
 
             console.log("URL:", url);
             const response = await axios.post(

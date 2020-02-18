@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, Router } from 'express';
 
-type Fn = () => any;
+type Fn = (req: Request, res: Response, next: NextFunction) => any | void;
 
 type AnyClass = {
     new(): any; // tslint:disable-line

@@ -24,7 +24,7 @@ export interface IPredictRequestParams {
 };
 
 export default class PredictionValidator {
-    static convertPredictParams(req: Request, _res: Response, next: NextFunction): void {
+    static validatePredictParams(req: Request, _res: Response, next: NextFunction): void {
         const params = req.body;
 
         const {

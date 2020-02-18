@@ -15,10 +15,11 @@
                 "debug-vscode"
             ],
             "outFiles": [
-                "${workspaceFolder}/src/index.js"
+                "${workspaceFolder}/dist/src/index.js"
             ],
             "port": 9229,
-            "sourceMaps": true
+            "sourceMaps": true,
+            "timeout": 25000
         }
     ]
 }
