@@ -1,12 +1,12 @@
 // import BaseService from "../libs/BaseService";
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import isReachable from 'is-reachable';
 import { IPredictionData } from '../params-converters/PredictionParamsConverter';
 
-type HeartDiseaseState = 0 | 1 | 2 | 3 | 4;
+export type HeartDiseaseAPIResult = 0 | 1 | 2 | 3 | 4;
 
-type IPredictionResult = {
-    [key: number]: HeartDiseaseState;
+export type IPredictionResult = {
+    [key: number]: HeartDiseaseAPIResult;
 };
 
 export default class PredictionService
@@ -26,7 +26,7 @@ export default class PredictionService
         }
     }
 
-    public async makeSinglePrediction(data: IPredictionData): Promise<HeartDiseaseState> {
+    public async makeSinglePrediction(data: IPredictionData): Promise<HeartDiseaseAPIResult> {
         try {
             const response = await this.fetchPrediction(data);
             if (response.status === 200) {
@@ -46,13 +46,12 @@ export default class PredictionService
         try {
             const url = `${process.env.PREDICTOR_URL}/predict`;
 
-            console.log("URL:", url);
             const response = await axios.post(
                 url,
                 data
             );
 
-            return response.data;
+            return response;
         } catch (e) {
             console.log(`Error: ${e.message}`);
             throw e;

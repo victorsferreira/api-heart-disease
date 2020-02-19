@@ -37,52 +37,94 @@ describe('Predict API',
         });
 
         it('Must respond 1 as PRESENCE', async () => {
-            try {
-                const response = await axios.post(
-                    `${apiUrl}/predict`,
-                    fixtures.input,
-                    { headers: { 'content-type': 'application/json' } }
-                );
+            predictorHelper.setResponses([
+                [1]
+            ]);
 
-                console.log(response.status);
-            } catch (e) {
-                console.log(e);
-            }
+            const response = await axios.post(
+                `http://localhost:3000/predict`,
+                fixtures.input,
+                { headers: { 'content-type': 'application/json' } }
+            );
 
-
-            // console.log(response)
+            expect(response.status).to.equals(200);
+            expect(response.data).to.have.keys('status');
+            expect(response.data.status).to.be.equals('presence');
         });
 
-        it('Must respond 1 as PRESENCE', async () => {
-            try {
-                const response = await axios.post(
-                    `${apiUrl}/healthcheck`,
-                    fixtures.input,
-                    { headers: { 'content-type': 'application/json' } }
-                );
+        it('Must respond 2 as PRESENCE', async () => {
+            predictorHelper.setResponses([
+                [2]
+            ]);
 
-                console.log(response.status);
-            } catch (e) {
-                console.log(e);
-            }
+            const response = await axios.post(
+                `http://localhost:3000/predict`,
+                fixtures.input,
+                { headers: { 'content-type': 'application/json' } }
+            );
 
-
-            // console.log(response)
+            expect(response.status).to.equals(200);
+            expect(response.data).to.have.keys('status');
+            expect(response.data.status).to.be.equals('presence');
         });
 
-        xit('Must respond 2 as PRESENCE', () => {
+        it('Must respond 3 as PRESENCE', async () => {
+            predictorHelper.setResponses([
+                [3]
+            ]);
 
+            const response = await axios.post(
+                `http://localhost:3000/predict`,
+                fixtures.input,
+                { headers: { 'content-type': 'application/json' } }
+            );
+
+            expect(response.status).to.equals(200);
+            expect(response.data).to.have.keys('status');
+            expect(response.data.status).to.be.equals('presence');
         });
 
-        xit('Must respond 3 as PRESENCE', () => {
+        it('Must respond 0 as ABSENCE', async () => {
+            predictorHelper.setResponses([
+                [0]
+            ]);
 
+            const response = await axios.post(
+                `http://localhost:3000/predict`,
+                fixtures.input,
+                { headers: { 'content-type': 'application/json' } }
+            );
+
+            expect(response.status).to.equals(200);
+            expect(response.data).to.have.keys('status');
+            expect(response.data.status).to.be.equals('absence');
         });
 
-        xit('Must respond 3 as PRESENCE', () => {
+        it('Must respond status 400 if some inputs aren\'t passed', async () => {
+            predictorHelper.setResponses([
+                [0]
+            ]);
 
+            const response = await axios.post(
+                `http://localhost:3000/predict`,
+                { ...fixtures.input, age: undefined },
+                {
+                    headers: { 'content-type': 'application/json' },
+                    validateStatus: (status) => {
+                        return status < 500;
+                    }
+                }
+            );
+
+            expect(response.status).to.equals(400);
         });
 
-        xit('Must respond 0 as ABSENCE', () => {
+        it('Must access Healthcheck', async () => {
+            const response = await axios.get(
+                `${apiUrl}/healthcheck`
+            );
 
+            expect(response.status).to.equals(200);
+            expect(response.data).to.have.keys('predictorIsReachable', 'version');
         });
     });

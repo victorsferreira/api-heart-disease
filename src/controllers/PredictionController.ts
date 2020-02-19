@@ -3,6 +3,7 @@ import PredictionService from '../services/PredictionService';
 import packageJson from '../../package.json';
 import { BadRequestError } from '../validators/PredictionValidator';
 import { IPredictionData } from "../params-converters/PredictionParamsConverter";
+import PredictionResponseBuilder from "../response-builders/PredictionResponseBuilder";
 
 export default class PredictionController extends BaseController {
     private predictionService: PredictionService;
@@ -36,13 +37,15 @@ export default class PredictionController extends BaseController {
         try {
             const result = await this.predictionService.makeSinglePrediction(requestParams);
 
-            res.status(200).json(result);
+            res.status(200).json(
+                PredictionResponseBuilder.predict(result)
+            );
         } catch (error) {
             console.log(error);
             if (error instanceof BadRequestError) {
                 res.status(400).json(error.message);
             } else {
-                res.status(500).json("Error");
+                res.status(501).json({ stack: error.stack, message: error.message });
             }
         }
     }

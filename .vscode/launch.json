@@ -20,6 +20,24 @@
             "port": 9229,
             "sourceMaps": true,
             "timeout": 25000
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run Integration Tests",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/mocha",
+            "env": {"PREDICTOR_DEV_PORT": "5000"},
+            "runtimeArgs": [
+                "--timeout",
+                "10000",
+                "-r",
+                "ts-node/register",
+                "./test/integration/**/*.spec.ts"
+            ],
+            "console": "integratedTerminal",
+            "sourceMaps": true,
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }

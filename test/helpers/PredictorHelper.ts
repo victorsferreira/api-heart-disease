@@ -14,13 +14,14 @@ export default class PredictorHelper {
 
         return new Promise((resolve, reject) => {
             try {
-                this.app.get('/predict', (req: Request, res: Response, next: NextFunction) => {
+                this.app.post('/predict', (req: Request, res: Response, next: NextFunction) => {
                     const response = this.responses.shift();
 
                     res.status(200).json(response);
                 });
 
                 const connection = this.app.listen(process.env.PREDICTOR_DEV_PORT, () => {
+                    console.log("Starting Predictor Mock Server at port", process.env.PREDICTOR_DEV_PORT);
                     resolve();
                 });
 
